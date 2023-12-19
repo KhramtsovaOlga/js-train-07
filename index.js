@@ -151,11 +151,11 @@ let rangeObject = {
 };
 
 // Функція "useSymbolIterator" використовує ітератор для отримання значень об'єкта
-function useSymbolIterator(obj) {
+function useSymbolIterator(rangeObject) {
   let result = [];
 
   for (let value of rangeObject) {
-    result = { ...result };
+    result = [...result, value];
     return result;
   }
   // Проходимо крізь елементи об'єкта obj, використовуючи цикл "for...of"
@@ -183,13 +183,28 @@ let myObject = {
   // Оголошення методу Symbol.iterator для об'єкта "myObject"
   //Повертаємо this
 
-  // Оголошення методу "next" для ітерації
-  // Створюємо логічний оператор який буде перевіряти чи властивість об'єкту currentIndex менша ніж довжина масиву category
-  //Створюємо змінну value якій присвоємо властивість name елемента масиву category з індексом currentIndex
-  // Збільшимо currentIndex на одиницю
-  // Повертаємо об'єкт з властивістю value значенням якої буде value,та прапорцем done: false
-  //Якщо властивість об'єкту currentIndex більше або дорівнює довжині масиву category повертаємо об'єкт з прапорцем done: true, коли ітерація закінчена
+  [Symbol.iterator]() {
+    this.currentIndex = 0;
+    return this;
+  },
+
+  next() {
+    if (this.currentIndex < this.category.length) {
+      const value = this.category[this.currentIndex].name;
+      return { value, done: false };
+    } else return;
+    {
+      done: true;
+    }
+  },
 };
+
+// Оголошення методу "next" для ітерації
+// Створюємо логічний оператор який буде перевіряти чи властивість об'єкту currentIndex менша ніж довжина масиву category
+//Створюємо змінну value якій присвоємо властивість name елемента масиву category з індексом currentIndex
+// Збільшимо currentIndex на одиницю
+// Повертаємо об'єкт з властивістю value значенням якої буде value,та прапорцем done: false
+//Якщо властивість об'єкту currentIndex більше або дорівнює довжині масиву category повертаємо об'єкт з прапорцем done: true, коли ітерація закінчена
 
 console.log("Завдання 10 ====================================");
 console.log(useSymbolIterator(myObject)); //Виведе [ 'apple', 'banana', 'orange', 'grape', 'mango' ]
